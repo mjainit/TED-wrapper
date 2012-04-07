@@ -1,0 +1,9 @@
+This Repository contains TED meta-metadata wrapper.
+
+There are total four folders. main wrapper is in Wrapper folder.
+
+There are total six examples two for talks, two for speakers and two for themes.
+
+Generated XMLs are in XML folder.
+
+Generated HTMLs are in HTML folder.

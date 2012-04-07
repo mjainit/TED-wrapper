@@ -1,0 +1,127 @@
+<meta_metadata_repository name="ted" package="ecologylab.semantics.generated.library.ted" >
+
+
+
+<meta_metadata name="talk_type" extends="compound_document" comment="Main TED talk type class" >
+     <scalar name="event" scalar_type="String"  comment="Name of the TED event" />
+     <scalar name="Speaker_bio" scalar_type="String" comment="Short Introduction of speaker"/>
+     <scalar name="Transcript" scalar_type="String" comment="Full transcript of the talk" />
+     <scalar name="Total_comments" scalar_type="Int"  comment="Total number of comments" />
+     <scalar name="Total_views" scalar_type="Int"  comment="Total number of views" />
+     <scalar name="Quote_from_the_talk" scalar_type="String"  comment="Popular quote form the talk" />
+     <collection name="Related_tags" child_type="talk_type" comment="Tags related to the talk" generate_class="false"/>
+     <collection name="Related_themes" child_type="talk_type" comment="Themes related to the talk" generate_class="false" />
+     <collection name="Simmiler_talks" child_type="talk_type" comment="Simmiler talks"  generate_class="false"/>
+</meta_metadata>
+
+
+<meta_metadata name="ted_talk" type="talk_type" parser="xpath" comment="A talk in TED site" > 
+     <selector url_path_tree="http://www.ted.com/talks"/>
+     <example_url url="http://www.ted.com/talks/jer_thorp_make_data_more_human.html"/>
+     <example_url url="http://www.ted.com/talks/taylor_wilson_yup_i_built_a_nuclear_fusion_reactor.html"/>
+     <scalar name="title" xpath="//*[@id='altHeadline']" /> 
+     <scalar name="description" xpath="//*[@id='tagline']" /> 
+     <scalar name="event" xpath="//*[@id='maincontent']//p//span/text()" />
+     <scalar name="Speaker_bio" xpath="//*[@id='maincontent']//div[@class='talk-intro']/p[2]" >
+     <filter regex="Full bio [&#187;]*" replace="" />
+     </scalar>
+     <scalar name="Transcript" xpath="//*[@id='transcriptText']" />
+     <scalar name="Total_comments" xpath="//*[@id='discussion']//span[@class='notranslate nostyle']/text()" />
+     <scalar name="Total_views" xpath="//*[@id='viewsHelp']/span" />
+     <scalar name="Quote_from_the_talk" xpath="//*[@id='talk-quote']//q" />
+     <collection name="Related_tags"  xpath="//*[@id='maincontent']//dd[@class='clearfix tags notranslate']//li/a">
+         <scalar name="title" xpath="./text()" />
+         <scalar name="location" xpath="./@href" />
+     </collection>
+    <collection name="Related_themes"  xpath="//*[@id='maincontent']//ul[@class='relatedThemes notranslate']/li" >
+         <scalar name="title" xpath=".//text()" />
+         <scalar name="location"  xpath=".//@href" /> 
+     </collection>
+     <collection name="Simmiler_talks"  xpath="//h4[@class='notranslate']/a">
+         <scalar name="title" xpath="./text()" />
+         <scalar name="location" xpath="./@href" /> 
+     </collection>  
+</meta_metadata> 
+
+
+
+<meta_metadata name="speaker_type" extends="compound_document" comment="Speaker type class" >
+      <scalar name="Why_you_shoul_listen_to_him"  scalar_type="String" comment="Introuduction and work" />
+      <collection name="Quotes_by_this_speaker" child_type="talk_type" comment="Quotes by this speaker" generate_class="false"/>
+      <collection name="Talks" child_type="talk_type" comment="Talks by this speaker" generate_class="false"/>
+      <collection name="On_the_web" child_type="compound_document" comment="This speaker on the web" generate_class="false"/>
+      <collection name="Related_speakers" child_type="speaker_type" comment="Related speakers"  generate_class="false"/>
+      <collection name="Related_themes" child_type="speaker_type" comment="Related themes" generate_class="false" /> 
+      <collection name="Conferences" child_type="compound_document" comment="Conferences"  generate_class="false"/>
+</meta_metadata>
+
+<meta_metadata name="speaker"  type="speaker_type" parser="xpath" comment="Speaker information extraction class" >
+      <selector url_path_tree="http://www.ted.com/speakers" />
+      <example_url url="http://www.ted.com/speakers/alain_de_botton.html"/>
+      <example_url url="http://www.ted.com/speakers/jer_thorp.html"/>
+      <scalar name="title" xpath="//*[@id='body']/h1/span" />
+      <scalar name="description" xpath="//*[@id='speakerscontent']/div[@class='clearfix']/p"  />
+      <scalar name="Why_you_shoul_listen_to_him"  xpath="//*[@id='speakerscontent']//div[@class='why']/p[1]"  />
+      <collection name="Quotes_by_this_speaker"  xpath="//*[@id='quotes']//li" >
+          <scalar name="title" xpath="./q" />
+          <scalar name="location" xpath="./p/a/@href" /> 
+      </collection>
+      <collection name="Talks"  xpath=".//h4[@class='notranslate']/a" >
+          <scalar name="title" xpath="./text()" />
+          <scalar name="location" xpath="./@href" /> 
+      </collection>
+      <collection name="On_the_web"  xpath="//*[@id='contextual']//dd[1]//li/a" >
+          <scalar name="title" xpath="./@title" />
+          <scalar name="location" xpath="./@href" /> 
+      </collection>
+      <collection name="Related_speakers"  xpath="//*[@id='contextual']//dd[3]/ul/li/a" >
+          <scalar name="title" xpath="./text()" />
+          <scalar name="location" xpath="./@href" /> 
+      </collection>
+      <collection name="Related_themes"  xpath="//*[@id='contextual']/dl[3]/dd[4]/ul/li/a"  >
+          <scalar name="title" xpath="./text()" />
+          <scalar name="location" xpath="./@href" /> 
+      </collection>
+      <collection name="Conferences"  xpath="//*[@id='contextual']//dd[5]/ul/li" > 
+          <scalar name="title" xpath="./text()" />
+      </collection> 
+      
+</meta_metadata>
+
+
+<meta_metadata name="theme_type" extends="compound_document" comment="Main theme  type class" > 
+      <scalar name="pic" scalar_type="ParsedURL" hide="true" comment="A picture of the theme" /> 
+      <scalar name="Total_videos" scalar_type="Int"  comment="Total number of videos under this theme" />
+      <scalar name="Total_comments" scalar_type="Int"  comment="Total number of comments" />
+      <collection name="top_talks" child_type="document"  comment="Some of the talks under this theme"  generate_class="false" />
+</meta_metadata>
+
+
+<meta_metadata name="theme"  type="theme_type" parser="xpath" comment="Speaker information extraction class" >
+      <selector url_path_tree="http://www.ted.com/themes" />
+      <example_url url="http://www.ted.com/themes/tales_of_invention.html"/>
+      <example_url url="http://www.ted.com/themes/talks_from_ted_fellows.html"/> 
+      <scalar name="title" xpath="//*[@id='body']/h1/span" /> 
+      <scalar name="description" xpath="//*[@id='themeDescription']" /> 
+      <scalar name="pic" xpath="//*[@id='contextual']/div[@class='about']/div[1]/img/@src" /> 
+      <scalar name="Total_videos" xpath="//*[@id='pageNavigator']/p" />
+      <scalar name="Total_comments" xpath="//*[@id='discussion']//div[@class='clearfix']/span/span/text()" /> 
+      <collection name="top_talks"  xpath="//h4[@class='notranslate']"  >
+          <scalar name="title" xpath=".//@title" />
+          <scalar name="location" xpath=".//@href" /> 
+      </collection>
+      
+      <semantic_actions>
+      <get_field name="pic" />
+      <if>
+        <not_null value="pic" />
+        <create_and_visualize_img_surrogate>
+          <arg value="pic" name="image_purl" />
+        </create_and_visualize_img_surrogate>
+      </if>      
+      </semantic_actions>
+
+</meta_metadata>
+
+</meta_metadata_repository> 
+
